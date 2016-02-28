@@ -8,7 +8,7 @@ public class Solution {
         if(head == null) return null;
         ListNode pre = null;
         ListNode cur = head;
-        ListNode next = cur.next;
+        ListNode next = null;
         while(cur != null){
             next = cur.next;
             cur.next = pre;
@@ -28,16 +28,9 @@ public class Solution {
         if(head == null) return null;
         if(head.next == null) return head;
         ListNode rest = head.next;
-        ListNode newhead = reverse(rest);
+        ListNode newhead = reverseList(rest);
         rest.next = head;
         head.next = null;
         return newhead;
-    }
-    private ListNode reverse(ListNode rest){
-        if(rest.next == null) return rest;
-        ListNode newrest = rest.next;
-        ListNode head = reverse(newrest);
-        newrest.next = rest;
-        return head;
     }
 }
