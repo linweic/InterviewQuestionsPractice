@@ -7,7 +7,7 @@
  *     TreeNode(int x) { val = x; }
  * }
  */
-
+/*Deprecated, not O(1) time when called next()*/
 public class BSTIterator {
     
     TreeNode cur;
@@ -34,6 +34,30 @@ public class BSTIterator {
         //after getting the smallest node, we know the next smallest node is the leftmost node in the current smallest node's right subtree
         cur = smallest.right;
         return smallest.val;
+    }
+}
+////////////////////////////////////////////////////
+public class BSTIterator {
+    Queue<TreeNode> queue;
+    public BSTIterator(TreeNode root) {
+        queue = new LinkedList<TreeNode>();
+        traverse(root);
+    }
+    private void traverse(TreeNode root){
+        if(root == null) return;
+        if(root.left != null) traverse(root.left);
+        queue.offer(root);
+        if(root.right != null) traverse(root.right);
+        return;
+    }
+    /** @return whether we have a next smallest number */
+    public boolean hasNext() {
+        return (queue.isEmpty() != true)? true : false;
+    }
+
+    /** @return the next smallest number */
+    public int next() {
+        return queue.poll().val;
     }
 }
 
