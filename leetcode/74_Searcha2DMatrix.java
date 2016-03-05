@@ -7,6 +7,7 @@ public class Solution {
         if(col == 0) return false;
         int r = 0;
         if(matrix[row-1][col-1]<target) return false;
+        //TO DO: Could improve to log(n) time to find the row using binary search
         for(int i = 0; i<row; i++){
             if(matrix[i][col-1] == target){
                 return true;
@@ -16,6 +17,7 @@ public class Solution {
                 break;
             }
         }
+
         int low = 0; int high = col-1;
         while(low <= high){
             int mid = low + (high-low)/2;
