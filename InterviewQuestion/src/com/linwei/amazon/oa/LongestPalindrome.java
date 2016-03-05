@@ -1,3 +1,5 @@
+package com.linwei.amazon.oa;
+
 public class LongestPalindrome {
 	//Dynamic Programming
 	public static String getLongest(String str){
