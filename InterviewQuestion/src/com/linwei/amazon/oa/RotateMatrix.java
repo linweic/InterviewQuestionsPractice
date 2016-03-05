@@ -1,6 +1,15 @@
 package com.linwei.amazon.oa;
 
 public class RotateMatrix {
+	/**
+	 * rotate the matrix in place,
+	 * 从外层到内层遍历，每一个loop里shift那一层的四条边。
+	 * 因为一共row/2次循环，每次循环访问(row-i+1)*(col-i+1)个cell, 其中i表示第几层。
+	 * 时间复杂度为O(n*m), n,m为矩阵的长和宽。space complexity: O(1)
+	 * @param matrix
+	 * @param flag
+	 * @return
+	 */
 	public static int[][] rotateByCell(int[][] matrix, int flag){
 		if(matrix == null || matrix.length == 0 || matrix[0].length == 0) return null;
 		int row = matrix.length;
@@ -51,7 +60,12 @@ public class RotateMatrix {
 			System.out.println();
 		}
 	}
-	
+	/**
+	 * Time: O(n*m), Space:O(n*m); not efficient to use in place method
+	 * @param matrix
+	 * @param flag
+	 * @return
+	 */
 	public static int[][] rotateBySide(int[][] matrix, int flag) {
 		if (matrix == null || matrix.length == 0 ||matrix[0].length == 0) {
 			return null;
