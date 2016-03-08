@@ -1,26 +1,26 @@
 package com.linwei.amazon.oa;
 
-import java.util.Collections;
-
 public class DayChange {
 	//left to cell[0] is 0, right to cell[length-1] is 0;
 	//same on two sides: 0; otherwise: 1
 	//Dynamic Programming
+	//In-place update: first bit stores current state, second bit stores next state,
+	//At the end of each day, shift second bit to first bit
 	public static int[] dayChange(int[] cell, int days){
 		if(cell == null) return null;
 		int len = cell.length;
 		if(len == 0) return new int[0];
 		if(len == 1) return new int[]{0};
-		int[] dp = new int[len];
+		//int[] dp = new int[len];
 		for(int i = 1; i<=days; i++){
-			dp[0] = 0^cell[1];
-			dp[len-1] = cell[len-2] ^ 0;
+			cell[0] = cell[0]|((0^(cell[1]&1))<<1);
+			cell[len-1] = cell[len-1]|(((cell[len-2]&1) ^ 0)<<1);
 			for(int j = 1; j<len-1; j++){
-				dp[j] = cell[j-1] ^ cell[j+1];
+				cell[j] = cell[j]|(((cell[j-1]&1) ^ (cell[j+1]&1))<<1);
 			}
-			int[] tmp = cell;
-			cell = dp;
-			dp = tmp;
+			for(int j = 0; j<len; j++){
+				cell[j] = cell[j]>>1;
+			}
 		}
 		return cell;
 	}
@@ -55,7 +55,7 @@ public class DayChange {
 		// TODO Auto-generated method stub
 		int[] cell = new int[]{1,0,0,0,0,1,0,0};
 		int[] cell1 = cell.clone();
-		int days = 1;
+		int days = 3;
 		DayChange.printarray(cell);
 		int[] res_my1 = DayChange.dayChange(cell, days);
 		DayChange.printarray(res_my1);
