@@ -13,9 +13,9 @@ public class Frenemy {
 	 * @author linweic
 	 *
 	 */
-	private static class Graph{
-		int v;
-		List<Integer>[] adj;
+	private class Graph{
+		private int v;
+		private List<Integer>[] adj;
 		@SuppressWarnings("unchecked")
 		public Graph(char[][] matrix, int ppl){
 			v = ppl;
@@ -32,17 +32,22 @@ public class Frenemy {
 			}
 		}
 	}
-	public static boolean isRelation(int ppl, char[][] matrix, int s, int t, String chain){
-		Graph graph = new Graph(matrix, ppl);
-		int index = -1;
-		return dfs(s, t, index, chain, graph, matrix);
+	Graph graph;
+	char[][] matrix;
+	public Frenemy(int ppl, char[][] matrix){
+		graph = new Graph(matrix, ppl);
+		this.matrix = matrix;
 	}
-	private static boolean dfs(int s, int t, int index, String chain, Graph graph, char[][] matrix){  
+	public boolean isRelation(int s, int t, String chain){
+		int index = -1;
+		return dfs(s, t, index, chain);
+	}
+	private boolean dfs(int s, int t, int index, String chain){  
 		index++;
 		for(int p : graph.adj[s]){
 			if(chain.charAt(index) == matrix[s][p]){
 				if(index < chain.length()-1){
-					if(dfs(p, t, index, chain, graph, matrix)==true) return true;
+					if(dfs(p, t, index, chain)==true) return true;
 					else continue;
 				}
 				if(index == chain.length()-1 && p == t) return true;
@@ -56,12 +61,14 @@ public class Frenemy {
 		int ppl = 3;
 		int s = 0;
 		int t = 2;
-		String chain = new String("FF");
+		String chain = new String("EFFFFE");
 		char[][] matrix = new char[][]{
 			{'-','F','E'},
 			{'F','-','F'},
 			{'E','F','-'}};
-		System.out.println(isRelation(3, matrix, s, t, chain));
+		Frenemy frenemy = new Frenemy(ppl, matrix);
+		frenemy.new Graph(matrix, ppl);
+		System.out.println(frenemy.isRelation(s, t, chain));
 	}
 
 }
