@@ -2,8 +2,6 @@ package com.linwei.amazon.oa;
 
 import java.util.Arrays;
 
-import com.linwei.dropbox.oa.Frenemy;
-
 public class ArithmeticSeq {
 	/**
 	 * find out the longest length of the arithmetic sequence

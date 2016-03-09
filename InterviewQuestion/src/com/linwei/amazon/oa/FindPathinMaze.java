@@ -23,7 +23,7 @@ public class FindPathinMaze {
 			if(dfs(grid, visited, i, j-1, row, col)) return true;
 			if(dfs(grid, visited, i, j+1, row, col)) return true;
 			//if none of the directions can get to the destination un-mark current visit point
-			visited[i][j] = 0;
+			//visited[i][j] = 0;
 		}
 		return false;
 	}
