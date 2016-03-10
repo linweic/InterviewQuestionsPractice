@@ -31,6 +31,9 @@ public class Frenemy {
 				}
 			}
 		}
+		private Iterable<Integer> adjacent(int v){
+			return adj[v];
+		}
 	}
 	Graph graph;
 	char[][] matrix;
@@ -44,7 +47,7 @@ public class Frenemy {
 	}
 	private boolean dfs(int s, int t, int index, String chain){  
 		index++;
-		for(int p : graph.adj[s]){
+		for(int p : graph.adjacent(s)){
 			if(chain.charAt(index) == matrix[s][p]){
 				if(index < chain.length()-1){
 					if(dfs(p, t, index, chain)==true) return true;
@@ -53,6 +56,32 @@ public class Frenemy {
 				if(index == chain.length()-1 && p == t) return true;
 				else continue;
 			}
+		}
+		return false;
+	}
+	/*BFS*/
+	public static boolean isRelation(int s, int t, char[][] matrix, String chain, int n){
+		Queue<Integer> queue = new LinkedList<Integer>();
+		queue.offer(s);
+		queue.offer(-1);
+		int index = 0;
+		while(!queue.isEmpty() && index<chain.length()){
+			int v = queue.poll();
+			/*use dummy node to indicate that all the nodes corresponding to current index have been checked*/
+			if(v == -1) {
+				index++;
+				queue.offer(-1);
+				continue;
+			}
+			for(int i = 0; i<n; i++){
+				if(chain.charAt(index) == matrix[v][i]){
+					queue.offer(i);
+				}
+			}
+		}
+		//after all the bfs, traverse queue to see if destination is in the queue
+		for(int i: queue){
+			if(i == t) return true;
 		}
 		return false;
 	}
@@ -69,6 +98,7 @@ public class Frenemy {
 		Frenemy frenemy = new Frenemy(ppl, matrix);
 		frenemy.new Graph(matrix, ppl);
 		System.out.println(frenemy.isRelation(s, t, chain));
+		System.out.println(isRelation(s,t,matrix,chain, ppl));
 	}
 
 }
