@@ -1,0 +1,9 @@
+yahoo,ap42
+google,ap42
+tweeter,thl76
+google,aa314
+google,aa314
+google, thl76
+tweeter,aa314
+tweeter,ap42
+yahoo,aa314
