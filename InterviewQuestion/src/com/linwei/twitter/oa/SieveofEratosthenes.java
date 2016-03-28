@@ -41,6 +41,11 @@ public class SieveofEratosthenes {
         for(int i = 2; i<n+1; i++){
             if(isPrime[i] == true) list.add(i);
         }
+        /*
+        String strings[] = new String[]{"abc", "def", "ghi", "jkl", "ghj", "abc"};
+        Arrays.sort(strings);
+        for(String string: strings) System.out.println(string);
+        */
         return list;
     }
 	public static void main(String[] args) {
