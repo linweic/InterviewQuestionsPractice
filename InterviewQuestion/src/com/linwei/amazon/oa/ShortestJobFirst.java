@@ -23,12 +23,13 @@ public class ShortestJobFirst {
 			return 0;
 		}
 		if(request.length == 0) return 0;
+		
 		Queue<Process> queue = new PriorityQueue<Process>(request.length, new Comparator<Process>(){
 			public int compare(Process p1, Process p2){
 				//note: compare duration time, not arrival time!!
 				return (p1.duration - p2.duration);
 			}
-		});
+		});//TODO: Interface, PriorityQueue, Queue API, anonymous class, comparator and comparable
 		int cur_time = 0;
 		int wait_time = 0;
 		int next_index = 0;
@@ -51,7 +52,7 @@ public class ShortestJobFirst {
 				count++;
 			}
 		}
-		return (float)wait_time/count;
+		return (float)wait_time/count; //TODO: primitive data type, cast
 		
 	}
 	private static class Process{
@@ -65,10 +66,11 @@ public class ShortestJobFirst {
 	private static void printProcess(Process p){
 		System.out.println("Process: "+ p.arrival + " "+ p.duration);
 	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		int arrival[] = {0,2,4,5};
-		int run[] = {7,4,1,4};
+		int arrival[] = {0,2,4,15};
+		int run[] = {7,4,1,1};
 		//int q = 2;
 		float avg_wait = ShortestJobFirst.SJFaverage(arrival, run);
 		System.out.println(avg_wait);
@@ -78,6 +80,9 @@ public class ShortestJobFirst {
 		//int q = 2;
 		float avg_wait2 = ShortestJobFirst.SJFaverage(arrival2, run2);
 		System.out.println(avg_wait2);
+		
+		//System.out.println(calculateAverageTime(arrival, run));
+		//System.out.println(calculateAverageTime(arrival2, run2));
 	}
 
 }

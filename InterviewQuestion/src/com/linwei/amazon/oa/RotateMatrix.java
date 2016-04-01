@@ -93,8 +93,41 @@ public class RotateMatrix {
 			return left;
 		}
 		else return null;
+	}
+	/**
+	 * In place method
+	 * @param matrix
+	 */
+	public static int[][] rotateBySideInplace(int[][] matrix, int flag){
+		if(matrix == null || matrix.length == 0 || matrix[0].length == 0){
+			return null;
 		}
-		
+		int n = matrix.length;
+		if(flag == 1){
+			//rotate to right
+			for(int i = 0; i<n/2; i++){
+				for(int j = 0; j<(n+1)/2; j++){
+					int tmp = matrix[i][j];
+					matrix[i][j] = matrix[n-1-j][i];
+					matrix[n-1-j][i] = matrix[n-1-i][n-1-j];
+					matrix[n-1-i][n-1-j] = matrix[j][n-1-i];
+					matrix[j][n-1-i] = tmp;
+				}
+			}
+		}
+		else{
+			for(int i = 0; i<n/2; i++){
+				for(int j = 0; j<(n+1)/2; j++){
+					int tmp = matrix[i][j];
+					matrix[i][j] = matrix[j][n-1-i];
+					matrix[j][n-1-i] = matrix[n-1-i][n-1-j];
+					matrix[n-1-i][n-1-j] = matrix[n-1-j][i];
+					matrix[n-1-j][i] = tmp;
+				}
+			}
+		}
+		return matrix;
+	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		// Test Case 1
@@ -108,8 +141,10 @@ public class RotateMatrix {
 	                      {4, 5, 6},
 	                      {7, 8, 9}
 	                     };
-	    int[][] matrix = RotateMatrix.rotateBySide(a, 0);
-	    int[][] matrix2 = RotateMatrix.rotateBySide(b, 0);
+	    //int[][] matrix = RotateMatrix.rotateBySide(a, 0);
+	    //int[][] matrix2 = RotateMatrix.rotateBySide(b, 0);
+	    int[][] matrix = RotateMatrix.rotateBySideInplace(a, 1);
+	    int[][] matrix2 = RotateMatrix.rotateBySideInplace(b, 1);
 	    RotateMatrix.printMatrix(matrix);
 	    System.out.println();
 	    RotateMatrix.printMatrix(matrix2);
