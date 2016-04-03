@@ -15,9 +15,9 @@ public class FileSystem {
 	 * @return
 	 */
 	static Map<String, List<String>> map;
-	static int offset;
+	//static int offset;
 	public static int solution(String string){
-		constructFileTree(string);
+		constructFileMap(string);
 		StringBuilder result = new StringBuilder();
 		for(String node : map.get("root")){
 			StringBuilder path = new StringBuilder();
@@ -26,9 +26,9 @@ public class FileSystem {
 		System.out.println(result);
 		return result.length();
 	}
-	private static void constructFileTree(String string){
+	private static void constructFileMap(String string){
 		map = new HashMap<String, List<String>>();
-		offset = 0;
+		int offset = 0;
 		Stack<String> stack = new Stack<String>();
 		String parent = new String("root");
 		stack.push(parent);
@@ -54,20 +54,23 @@ public class FileSystem {
 			}
 			map.get(parent).add(strings[i].trim());
 		}
+		/*
 		for(String s : map.keySet()){
 			System.out.println(s + " " + map.get(s));
 		}
+		*/
 	}
 	private static void dfs(String node, StringBuilder path, StringBuilder result){
 		StringBuilder curpath = new StringBuilder();
 		curpath.append(path).append("/").append(node);
 		List<String> subNodes = map.get(node);
 		if(subNodes == null) return;
+		boolean checked = false;//indicate whether we have found a picture in this fold
 		for(String subNode: subNodes){
-			if(subNode.endsWith(".jpeg")||subNode.endsWith(".png")||subNode.endsWith(".gif")){
-				System.out.println(subNode);
+			if((subNode.endsWith(".jpeg")||subNode.endsWith(".png")||subNode.endsWith(".gif")) && checked == false){
+				//System.out.println(subNode);
 				result.append(curpath);
-				return;
+				checked = true;
 			}
 			else{
 				if(subNode.endsWith(".(\\w)+")){
@@ -79,12 +82,105 @@ public class FileSystem {
 			}
 		}
 	}
+	/**
+	 * use tree to construct file system
+	 * @author linweic
+	 *
+	 */
+	public static int solution2(String string){
+		TreeNode root = constructFileTree(string);
+		StringBuilder result = new StringBuilder();
+		for(TreeNode node : root.children){
+			StringBuilder path = new StringBuilder();
+			dfs(node, path, result);
+		}
+		return result.length();
+	}
+	private static class TreeNode{
+		String name;
+		List<TreeNode> children;
+		public TreeNode(String name){
+			this.name = name;
+			children = new ArrayList<TreeNode>();
+		}
+	}
+	private static TreeNode constructFileTree(String string){
+		int offset = 0;
+		String parent = new String("root");
+		String strings[] = string.split("\n");
+		Stack<TreeNode> stack = new Stack<TreeNode>();
+		TreeNode root = new TreeNode(parent);
+		stack.push(root);
+		//TreeNode cur = root;
+		root.children.add(new TreeNode(strings[0]));
+		for(int i = 1; i<strings.length; i++){
+			int leadingspace = strings[i].length() - strings[i].trim().length();
+			if(leadingspace > offset){
+				offset = leadingspace;
+				parent = strings[i-1].trim();
+				//TreeNode cur = new TreeNode(parent);
+				TreeNode cur = stack.peek();
+				for(TreeNode node : cur.children){
+					if(node.name.equals(parent)){
+						stack.push(node);
+					}
+				}
+			}
+			else if(leadingspace < offset){
+				for(int j = offset - leadingspace; j>0; j--){
+					stack.pop();
+				}
+				offset = leadingspace;
+			}	
+			stack.peek().children.add(new TreeNode(strings[i].trim()));
+		}
+		printTree(root);
+		//printChildren(root.children.get(0));
+		return root;
+	}
+	private static void printTree(TreeNode root){
+		if(root.children.isEmpty()) return;
+		printChildren(root);
+		for(TreeNode node : root.children){
+			printTree(node);
+		}
+	}
+	private static void printChildren(TreeNode root){
+		System.out.print(root.name+": ");
+		for(TreeNode node : root.children){
+			System.out.print(node.name+" ");
+		}
+		System.out.println();
+	}
+	private static void dfs(TreeNode node, StringBuilder path, StringBuilder result){
+		StringBuilder curPath = new StringBuilder();
+		curPath.append(path).append("/").append(node.name);
+		if(node.children.isEmpty()) return;
+		boolean checked = false;
+		for(TreeNode subnode : node.children){
+			if((subnode.name.endsWith(".jpeg")||subnode.name.endsWith(".png")||subnode.name.endsWith(".gif"))
+					&& checked == false){
+						result.append(curPath);
+					}
+			else{
+				if(subnode.name.endsWith(".(\\w)+")){
+					continue;
+				}
+				else{
+					dfs(subnode, curPath, result);
+				}
+			}
+				
+		}
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String s = "dir1\n dir11\n dir12\n  picture.jpeg\n  dir121\n  file1.txt\ndir2\n file2.gif";
+		String s = "dir1\n dir11\n dir12\n  picture.jpeg\n  dir121\n   file3.png\n  file1.txt\ndir2\n file2.gif";
 		System.out.println(solution(s));
-		String s1 = "a\n b\n c\n d\ne\n f\n g\n  h\n i\n";
-		System.out.println(solution(s1));
+		System.out.println(solution2(s));
+		//String s1 = "a\n b\n c\n d\ne\n f\n g\n  h\n i\n";
+		//System.out.println(solution(s1));
 	}
 
 }
