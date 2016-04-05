@@ -35,4 +35,38 @@ public class Solution {
         //IMPORTANT: reset visited[cur] as false before each dfs returns
         visited[curposition] = false;
     }
+
+
+    /*
+     * Solution 2, pick one element, recursively permute the rest of the element.
+     **/
+    public List<List<Integer>> permute2(int[] nums) {
+        permutation = new ArrayList<List<Integer>>();
+        if(nums == null || nums.length == 0) return permutation;
+        int len = nums.length;
+        recursive(nums, 0, len);
+        return permutation;
+    }
+    //Do not need to pass additional list as argument, each reordered nums is a permutation.
+    private void recursive(int[] nums, int begin, int end){
+        int len = nums.length;
+        if(begin == end){
+            Integer[] Nums = new Integer[len];
+            for(int i = 0; i< len; i++){
+                Nums[i] = nums[i];
+            }
+            permutation.add(Arrays.asList(Nums));
+        }
+        for(int i = begin; i<end; i++){
+            swap(nums, i, begin);
+            recursive(nums, begin+1, end);
+            //IMPORTANT to swap back the two elements!
+            swap(nums, i, begin);
+        }
+    }
+    private void swap(int[] nums, int i, int j){
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
 }
