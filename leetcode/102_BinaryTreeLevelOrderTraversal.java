@@ -35,4 +35,48 @@ public class Solution {
         res.add(curLevelVal);
         levelOrderHelper(res, curLevelNodes);
     }
+    /**
+     * Solution 2
+     * */
+    /**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+/**
+ * queue:
+ * cur:
+ * sublist: 
+ * result:[ [3][9,20] [15,7] ]
+ * */
+    /**
+     * Use bfs to put node in queue, put a dummy node when each level is finished
+     * */
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        List<Integer> sublist = new ArrayList<Integer>();
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        if(root == null) return result;
+        queue.offer(root);
+        queue.offer(new TreeNode(Integer.MAX_VALUE));
+        while(!queue.isEmpty()){
+            TreeNode cur = queue.poll();
+            if(cur.val == Integer.MAX_VALUE){
+                result.add(sublist);
+                sublist = new ArrayList<Integer>();
+                if(!queue.isEmpty()) queue.offer(new TreeNode(Integer.MAX_VALUE));
+            }
+            else{
+                sublist.add(cur.val);
+                if(cur.left != null) queue.offer(cur.left);
+                if(cur.right != null) queue.offer(cur.right);
+            }
+        }
+        return result;
+    }
+
 }
