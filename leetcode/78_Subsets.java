@@ -11,11 +11,8 @@ public class Solution {
             int num = nums[i];
             List<List<Integer>> newLists = new ArrayList<List<Integer>>();
             for(List<Integer> list : lists){
-                List<Integer> newList = new ArrayList<Integer>();
-                for(Integer integer: list){
-                    newList.add(integer);
-                }
-                newList.add(nums[i]);
+                List<Integer> newList = new ArrayList<Integer>(list);
+                newList.add(num);
                 newLists.add(newList);
             }
             lists.addAll(newLists);
